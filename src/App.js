@@ -17,7 +17,11 @@ function App() {
         const result = await axios.get(`${API_BASE_URL}/message`);
         setWelcomeMessage(result.data.message);
       } catch (err) {
-        setWelcomeMessage('Could not load the welcome message.');
+        const details = err.response
+          ? `Server responded with ${err.response.status}`
+          : err.message;
+
+        setWelcomeMessage(`Could not load the welcome message. ${details}`);
       }
     };
 
