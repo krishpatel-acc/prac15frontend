@@ -1,38 +1,113 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.app {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background: #eef2f7;
+  color: #172033;
+  padding: 32px 16px;
 }
 
-.App-link {
-  color: #61dafb;
+.api-panel {
+  width: min(100%, 560px);
+  background: #ffffff;
+  border: 1px solid #d8dee9;
+  border-radius: 8px;
+  box-shadow: 0 16px 36px rgba(23, 32, 51, 0.12);
+  padding: 32px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.message-box {
+  border-left: 4px solid #2563eb;
+  background: #f8fafc;
+  padding: 20px;
+  margin-bottom: 28px;
+}
+
+.label {
+  margin: 0 0 8px;
+  color: #5f6b7a;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.8rem;
+  line-height: 1.25;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 1.35rem;
+}
+
+.api-url {
+  display: block;
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.submit-form {
+  display: grid;
+  gap: 10px;
+}
+
+.submit-form label {
+  font-weight: 700;
+}
+
+.submit-form input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font: inherit;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+
+.submit-form input:focus {
+  border-color: #2563eb;
+  outline: 3px solid rgba(37, 99, 235, 0.14);
+}
+
+.submit-form button {
+  border: 0;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 13px 16px;
+}
+
+.submit-form button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.status {
+  border-radius: 6px;
+  margin: 20px 0 0;
+  padding: 12px 14px;
+  font-weight: 700;
+}
+
+.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.error {
+  background: #fee2e2;
+  color: #991b1b;
 }

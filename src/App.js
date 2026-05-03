@@ -1,23 +1,96 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './App.css';
 
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+
 function App() {
+  const [welcomeMessage, setWelcomeMessage] = useState('Loading message...');
+  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [response, setResponse] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const fetchMessage = async () => {
+      try {
+        const result = await axios.get(`${API_BASE_URL}/message`);
+        setWelcomeMessage(result.data.message);
+      } catch (err) {
+        setWelcomeMessage('Could not load the welcome message.');
+      }
+    };
+
+    fetchMessage();
+  }, []);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((currentData) => ({
+      ...currentData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError('');
+    setResponse('');
+    setIsSubmitting(true);
+
+    try {
+      const result = await axios.post(`${API_BASE_URL}/submit`, formData);
+      setResponse(result.data.message);
+      setFormData({ name: '', email: '' });
+    } catch (err) {
+      setError('Submission failed. Please check that the backend is running.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <main className="api-panel">
+        <section className="message-box">
+          <p className="label">Backend Message</p>
+          <h1>{welcomeMessage}</h1>
+          <span className="api-url">API: {API_BASE_URL}</span>
+        </section>
+
+        <form className="submit-form" onSubmit={handleSubmit}>
+          <h2>Submit Details</h2>
+
+          <label htmlFor="name">Name</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Enter your name"
+            required
+          />
+
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Enter your email"
+            required
+          />
+
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Sending...' : 'Submit'}
+          </button>
+        </form>
+
+        {response && <p className="status success">{response}</p>}
+        {error && <p className="status error">{error}</p>}
+      </main>
     </div>
   );
 }
