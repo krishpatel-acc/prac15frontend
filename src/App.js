@@ -11,6 +11,7 @@ function App() {
   const [response, setResponse] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchMessage = async () => {
@@ -26,7 +27,17 @@ function App() {
       }
     };
 
+    const fetchUsers = async () => {
+      try {
+        const result = await axios.get(`${API_BASE_URL}/users`);
+        setUsers(result.data.users);
+      } catch (err) {
+        setError('Could not load users from backend.');
+      }
+    };
+
     fetchMessage();
+    fetchUsers();
   }, []);
 
   const handleChange = (event) => {
@@ -46,6 +57,7 @@ function App() {
     try {
       const result = await axios.post(`${API_BASE_URL}/submit`, formData);
       setResponse(result.data.message);
+      setUsers(result.data.users);
       setFormData({ name: '', email: '' });
     } catch (err) {
       setError('Submission failed. Please check that the backend is running.');
@@ -95,6 +107,23 @@ function App() {
 
         {response && <p className="status success">{response}</p>}
         {error && <p className="status error">{error}</p>}
+
+        <section className="users-list">
+          <h2>Added Users</h2>
+
+          {users.length === 0 ? (
+            <p>No users added yet.</p>
+          ) : (
+            <ul>
+              {users.map((user) => (
+                <li key={user.id}>
+                  <span>{user.name}</span>
+                  <span>{user.email}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       </main>
     </div>
   );

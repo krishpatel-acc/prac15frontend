@@ -111,3 +111,36 @@ h2 {
   background: #fee2e2;
   color: #991b1b;
 }
+
+.users-list {
+  margin-top: 28px;
+}
+
+.users-list p {
+  margin: 0;
+  color: #64748b;
+}
+
+.users-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.users-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 10px 0;
+}
+
+.users-list li span:first-child {
+  font-weight: 700;
+}
+
+.users-list li span:last-child {
+  color: #475569;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
