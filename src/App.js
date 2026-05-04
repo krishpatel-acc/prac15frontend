@@ -5,6 +5,20 @@ import './App.css';
 const API_BASE_URL =
   process.env.REACT_APP_BACKEND_URL || 'https://prac15backend.vercel.app';
 
+const wait = (milliseconds) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+
+const requestWithRetry = async (request) => {
+  try {
+    return await request();
+  } catch (err) {
+    await wait(700);
+    return request();
+  }
+};
+
 function App() {
   const [welcomeMessage, setWelcomeMessage] = useState('Loading message...');
   const [formData, setFormData] = useState({ name: '', email: '' });
@@ -16,7 +30,9 @@ function App() {
   useEffect(() => {
     const fetchMessage = async () => {
       try {
-        const result = await axios.get(`${API_BASE_URL}/message`);
+        const result = await requestWithRetry(() =>
+          axios.get(`${API_BASE_URL}/message`)
+        );
         setWelcomeMessage(result.data.message);
       } catch (err) {
         const details = err.response
@@ -29,10 +45,12 @@ function App() {
 
     const fetchUsers = async () => {
       try {
-        const result = await axios.get(`${API_BASE_URL}/users`);
+        const result = await requestWithRetry(() =>
+          axios.get(`${API_BASE_URL}/users`)
+        );
         setUsers(result.data.users);
       } catch (err) {
-        setError('Could not load users from backend.');
+        setUsers([]);
       }
     };
 
@@ -55,7 +73,9 @@ function App() {
     setIsSubmitting(true);
 
     try {
-      const result = await axios.post(`${API_BASE_URL}/submit`, formData);
+      const result = await requestWithRetry(() =>
+        axios.post(`${API_BASE_URL}/submit`, formData)
+      );
       setResponse(result.data.message);
       setUsers(result.data.users);
       setFormData({ name: '', email: '' });
