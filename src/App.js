@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const API_BASE_URL =
+  process.env.REACT_APP_BACKEND_URL || 'https://prac15backend.vercel.app';
 
 function App() {
   const [welcomeMessage, setWelcomeMessage] = useState('Loading message...');
